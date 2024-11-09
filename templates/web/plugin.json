@@ -1,0 +1,15 @@
+{
+    "pluginName": "{{pluginName}}",
+    "version": "0.0.1",
+    "description": "a toolkit web plugin demo",
+    "keywords": [
+        "demo"
+    ],
+    "entry": "{{{entry}}}",
+    "pluginType": "ui",
+    "mode": "multi",
+    "logo": "./icon.ico",
+    "webContainer": false,
+    "author": "TrumanDu",
+    "homepage": "https://github.com/app-toolkit/toolkit-cli"
+}
