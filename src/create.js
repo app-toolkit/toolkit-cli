@@ -1,8 +1,14 @@
 import fs from "fs-extra";
 import inquirer from "inquirer";
 import path from "path";
+import { dirname } from 'path';
 import chalk from "chalk";
 import Mustache from "mustache";
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const rootDir = dirname(__dirname);
 
 const check = async (name, options) => {
   const cwd = process.cwd();
@@ -69,11 +75,11 @@ export default async function create(name, options) {
   // 2.copy文件
   const cwd = process.cwd();
   const pluginDirectory = path.join(cwd, name);
-  const githubDirectory = path.join(cwd, ".github");
+  const githubDirectory = path.join(rootDir, ".github");
 
   await fs.copy(githubDirectory, path.join(pluginDirectory, ".github"));
 
-  const webTemplate = path.join(cwd, "templates", "web");
+  const webTemplate = path.join(rootDir, "templates", "web");
 
   if (template == "website" || template == "web") {
     const pkgTemplate = path.join(webTemplate, "package.json");
