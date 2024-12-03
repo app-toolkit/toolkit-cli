@@ -1,10 +1,10 @@
 import fs from "fs-extra";
 import inquirer from "inquirer";
 import path from "path";
-import { dirname } from 'path';
+import { dirname } from "path";
 import chalk from "chalk";
 import Mustache from "mustache";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -65,9 +65,6 @@ export default async function create(name, options) {
   ]);
 
   let entry = "/";
-  if (template == "website") {
-    entry = "https://toolkit.trumandu.top/";
-  }
 
   console.log(template);
   // 1.创建文件夹
@@ -78,22 +75,33 @@ export default async function create(name, options) {
   const githubDirectory = path.join(rootDir, ".github");
 
   await fs.copy(githubDirectory, path.join(pluginDirectory, ".github"));
+  let templateDir = path.join(rootDir, "templates");
+  let pluginRendered;
+  let pluginTemplate;
 
-  const webTemplate = path.join(rootDir, "templates", "web");
-
-  if (template == "website" || template == "web") {
-    const pkgTemplate = path.join(webTemplate, "package.json");
-    let content = fs.readFileSync(pkgTemplate, "utf-8");
-    const rendered = Mustache.render(content, { pluginName: name });
-    fs.writeFileSync(path.join(pluginDirectory, "package.json"), rendered);
-
-    const pluginTemplate = path.join(webTemplate, "plugin.json");
-    content = fs.readFileSync(pluginTemplate, "utf-8");
-    const pluginRendered = Mustache.render(content, {
-      pluginName: name,
-      entry,
-    });
-    fs.writeFileSync(path.join(pluginDirectory, "plugin.json"), pluginRendered);
-    console.log(`${chalk.green("Create success!")}`);
+  if (template == "website") {
+    templateDir = path.join(templateDir, "website");
+    pluginTemplate = path.join(templateDir, "plugin.json");
+    entry = "https://toolkit.trumandu.top/";
   }
+
+  if (template == "web") {
+    templateDir = path.join(templateDir, "web");
+    pluginTemplate = path.join(templateDir, "plugin.json");
+    entry = "index.html";
+    await fs.copy(templateDir, pluginDirectory);
+  }
+
+  const pkgTemplate = path.join(templateDir, "package.json");
+  let content = fs.readFileSync(pkgTemplate, "utf-8");
+  const rendered = Mustache.render(content, { pluginName: name });
+  pluginRendered = Mustache.render(fs.readFileSync(pluginTemplate, "utf-8"), {
+    pluginName: name,
+    entry,
+  });
+
+  fs.writeFileSync(path.join(pluginDirectory, "package.json"), rendered);
+  fs.writeFileSync(path.join(pluginDirectory, "plugin.json"), pluginRendered);
+
+  console.log(`${chalk.green("Create success!")}`);
 }

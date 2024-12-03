@@ -1,15 +1,13 @@
 {
-    "pluginName": "{{pluginName}}",
-    "version": "0.0.1",
-    "description": "a toolkit web plugin demo",
-    "keywords": [
-        "demo"
-    ],
-    "entry": "{{{entry}}}",
-    "pluginType": "ui",
-    "mode": "multi",
-    "logo": "./icon.ico",
-    "webContainer": false,
-    "author": "TrumanDu",
-    "homepage": "https://github.com/app-toolkit/toolkit-cli"
+  "pluginName": "{{pluginName}}",
+  "version": "1.4",
+  "description": "web 模板项目",
+  "keywords": [
+    "web"
+  ],
+  "entry": "index.html",
+  "pluginType": "ui",
+  "mode": "multi",
+  "author": "",
+  "homepage": "https://github.com/app-toolkit/"
 }
